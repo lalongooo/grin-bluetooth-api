@@ -42,7 +42,7 @@ app.post('/add', function(req, res) {
       if(err.code === 11000){
         Device.findOne({ address: req.body.address }, function (err, device) {
           const resDevice = {
-            "id": device.id,
+            "_id": device._id,
             "name": device.name,
             "address": device.address,
             "strength": device.strength,
