@@ -36,32 +36,34 @@ app.post('/add', function(req, res) {
   device.name = req.body.name
   device.address = req.body.address
   device.strength = req.body.strength
-  device.save(function(err, savedDevice){
+  
+  Device.findOne({ address: req.body.address }, function (err, foundDevice) {
     if(err){
-      console.log(err);
-      if(err.code === 11000){
-        Device.findOne({ address: req.body.address }, function (err, device) {
-          const resDevice = {
-            "id": device.id,
-            "name": device.name,
-            "address": device.address,
-            "strength": device.strength,
-            "created_at": device.created_at,
-          }
-          res.json(resDevice)
-        });
-      } else {
-        res.status(500).end();
-      }
-    } else {
+      console.log(err)
+      res.status(500).end();
+      return;
+    }
+
+    if(foundDevice) {
       const resDevice = {
-        "id": savedDevice.id,
-        "name": savedDevice.name,
-        "address": savedDevice.address,
-        "strength": savedDevice.strength,
-        "created_at": savedDevice.created_at,
+        "_id": foundDevice._id,
+        "name": foundDevice.name,
+        "address": foundDevice.address,
+        "strength": foundDevice.strength,
+        "created_at": foundDevice.created_at,
       }
       res.json(resDevice)
+    } else {
+      device.save(function(err,savedDevice){
+        const resDevice = {
+          "id": savedDevice.id,
+          "name": savedDevice.name,
+          "address": savedDevice.address,
+          "strength": savedDevice.strength,
+          "created_at": savedDevice.created_at,
+        }
+        res.json(resDevice)
+      });
     }
   });
 });
