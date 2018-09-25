@@ -36,21 +36,20 @@ app.post('/add', function(req, res) {
   device.name = req.body.name
   device.address = req.body.address
   device.strength = req.body.strength
-  
-  Device.findOne({ address: req.body.address }, function (err, foundDevice) {
+
+  Device.findOneAndUpdate({ address: req.body.address }, { "updated_at": Date.now() },function (err, foundDevice) {
     if(err){
       console.log(err)
       res.status(500).end();
       return;
     }
-
     if(foundDevice) {
       const resDevice = {
         "_id": foundDevice._id,
         "name": foundDevice.name,
         "address": foundDevice.address,
         "strength": foundDevice.strength,
-        "created_at": foundDevice.created_at,
+        "created_at": foundDevice.updated_at,
       }
       res.json(resDevice)
     } else {
@@ -60,7 +59,7 @@ app.post('/add', function(req, res) {
           "name": savedDevice.name,
           "address": savedDevice.address,
           "strength": savedDevice.strength,
-          "created_at": savedDevice.created_at,
+          "created_at": savedDevice.updated_at,
         }
         res.json(resDevice)
       });

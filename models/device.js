@@ -6,7 +6,7 @@ let deviceSchema = mongoose.Schema(
     strength: { type: String, required : true },
   },
   {
-    timestamps: { createdAt: 'created_at', updatedAt: false }
+    timestamps: { createdAt: 'created_at', updatedAt: "updated_at" }
   }
 );
 let Device = module.exports = mongoose.model('Device', deviceSchema);
