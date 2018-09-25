@@ -39,11 +39,30 @@ app.post('/add', function(req, res) {
 
   Device.findOneAndUpdate({ address: req.body.address }, { "updated_at": Date.now() },function (err, foundDevice) {
     if(err){
+<<<<<<< HEAD
       console.log(err)
       res.status(500).end();
       return;
     }
     if(foundDevice) {
+=======
+      console.log(err);
+      if(err.code === 11000){
+        Device.findOne({ address: req.body.address }, function (err, device) {
+          const resDevice = {
+            "_id": device._id,
+            "name": device.name,
+            "address": device.address,
+            "strength": device.strength,
+            "created_at": device.created_at,
+          }
+          res.json(resDevice)
+        });
+      } else {
+        res.status(500).end();
+      }
+    } else {
+>>>>>>> 84d45bae72c31539eec08346d13529a8091fbfa9
       const resDevice = {
         "_id": foundDevice._id,
         "name": foundDevice.name,
