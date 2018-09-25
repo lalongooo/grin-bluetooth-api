@@ -70,7 +70,7 @@ app.post('/add', function(req, res) {
       } else {
         device.save(function(err,savedDevice){
           const resDevice = {
-            "id": savedDevice.id,
+            "_id": savedDevice.id,
             "name": savedDevice.name,
             "address": savedDevice.address,
             "strength": savedDevice.strength,
